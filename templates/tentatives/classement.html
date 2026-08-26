@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block titre %}Classement — {{ qcm.titre }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:640px;">
+    <span class="eyebrow">{{ qcm.titre }}</span>
+    <h1 class="display-2" style="margin-bottom:8px;">Classement</h1>
+    <p class="lede" style="margin-bottom:28px;">{{ nb_participants }} participant{{ nb_participants|pluralize }}</p>
+
+    {% if rang_utilisateur_courant %}
+    <div class="classement-position-perso">
+      Votre position : <strong>{{ rang_utilisateur_courant }}{% if rang_utilisateur_courant == 1 %}er{% else %}e{% endif %}</strong> / {{ nb_participants }}
+    </div>
+    {% endif %}
+
+    {% if classement %}
+    <table class="dj-table">
+      <thead><tr><th>Rang</th><th>Candidat</th><th>Score</th></tr></thead>
+      <tbody>
+        {% for entree in classement %}
+        <tr class="{% if entree.utilisateur.id == user.id %}classement-ligne-perso{% endif %}">
+          <td>
+            {% if entree.rang == 1 %}🥇{% elif entree.rang == 2 %}🥈{% elif entree.rang == 3 %}🥉{% else %}{{ entree.rang }}{% endif %}
+          </td>
+          <td>{{ entree.utilisateur.username }}{% if entree.utilisateur.id == user.id %} (vous){% endif %}</td>
+          <td>{{ entree.pourcentage }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><p>Personne n'a encore passé ce QCM.</p></div>
+    {% endif %}
+
+    <a href="{% url 'mes-resultats-web' %}" class="btn btn-ghost" style="margin-top:24px;">← Mes résultats</a>
+  </div>
+</section>
+{% endblock %}

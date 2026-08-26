@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titre %}Personnaliser mon organisation{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container branding-preview">
+    <div>
+      <span class="eyebrow">{{ object.nom }}</span>
+      <h1 class="display-2" style="margin-bottom:12px;">Personnaliser mon organisation</h1>
+      <p class="lede" style="margin-bottom:28px;">
+        Ces réglages s'appliquent automatiquement sur votre page web et l'application mobile.
+      </p>
+
+      <form method="post" enctype="multipart/form-data" class="dj-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+    </div>
+
+    <div>
+      <div class="branding-mock">
+        <div class="branding-mock-bar" id="apercu-bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="branding-mock-body">
+          <div class="swatch-row">
+            <div class="swatch" id="apercu-primaire" style="background:{{ object.couleur_primaire }}"></div>
+            <div class="swatch" id="apercu-secondaire" style="background:{{ object.couleur_secondaire }}"></div>
+          </div>
+          <div class="fake-line w80"></div>
+          <div class="fake-line w60"></div>
+          <div class="fake-line"></div>
+        </div>
+      </div>
+      <p style="font-size:0.82rem; color:var(--color-ink-soft); margin-top:12px;">Aperçu en direct</p>
+      <a href="{% url 'organisation-home' object.pk %}" class="btn btn-ghost" style="margin-top:12px;">
+        Voir ma page publique →
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Aperçu en direct des couleurs, sans recharger la page
+  document.addEventListener("DOMContentLoaded", () => {
+    const primaire = document.querySelector('input[name="couleur_primaire"]');
+    const secondaire = document.querySelector('input[name="couleur_secondaire"]');
+    const barreApercu = document.getElementById("apercu-bar");
+    const swatchPrimaire = document.getElementById("apercu-primaire");
+    const swatchSecondaire = document.getElementById("apercu-secondaire");
+
+    if (primaire) {
+      primaire.addEventListener("input", () => {
+        barreApercu.style.background = primaire.value;
+        swatchPrimaire.style.background = primaire.value;
+      });
+    }
+    if (secondaire) {
+      secondaire.addEventListener("input", () => {
+        swatchSecondaire.style.background = secondaire.value;
+      });
+    }
+  });
+</script>
+{% endblock %}

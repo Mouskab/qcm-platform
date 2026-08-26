@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titre %}Page introuvable — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center; padding:80px 20px;">
+    <span class="eyebrow">Erreur 404</span>
+    <h1 class="display-2" style="margin:16px 0;">Cette question n'est pas au programme.</h1>
+    <p class="lede" style="margin:0 auto 28px;">La page que vous cherchez n'existe pas, ou plus.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

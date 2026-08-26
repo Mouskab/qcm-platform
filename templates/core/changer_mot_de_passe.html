@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titre %}Changer mon mot de passe{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px;">
+    <span class="eyebrow">Compte</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Changer mon mot de passe</h1>
+
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Mettre à jour</button>
+      <a href="{% url 'profil-web' %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

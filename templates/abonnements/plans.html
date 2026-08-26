@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block titre %}Abonnement — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:900px;">
+    <span class="eyebrow">Abonnement</span>
+    <h1 class="display-2" style="margin-bottom:12px;">
+      {% if user.organisation_id %}Abonnement de {{ user.organisation.nom }}{% else %}Votre abonnement{% endif %}
+    </h1>
+
+    {% if abonnement_actif %}
+    <div class="abonnement-actif-banner">
+      <div>
+        <strong>Abonnement actif</strong> — {{ abonnement_actif.plan.nom }}
+        <span>Valide jusqu'au {{ abonnement_actif.date_fin|date:"d/m/Y" }}</span>
+      </div>
+      <span class="badge public">Actif</span>
+    </div>
+    {% else %}
+    <p class="lede" style="margin-bottom:32px;">Choisissez un plan pour accéder au catalogue de QCM.</p>
+    {% endif %}
+
+    <div class="pricing-grid" style="margin-top:32px;">
+      {% for plan in plans %}
+      <div class="price-card">
+        <span class="tag">{{ plan.get_duree_display }}</span>
+        <h3>{{ plan.nom }}</h3>
+        <div class="price-amount">{{ plan.prix }} {{ plan.devise }}</div>
+        <ul>
+          {% if plan.nb_qcm_max %}<li>{{ plan.nb_qcm_max }} QCM maximum</li>{% else %}<li>QCM illimités</li>{% endif %}
+          {% if plan.nb_utilisateurs_max %}<li>{{ plan.nb_utilisateurs_max }} utilisateurs maximum</li>{% else %}<li>Utilisateurs illimités</li>{% endif %}
+        </ul>
+
+        <form method="post" action="{% url 'souscrire-web' plan.id %}" style="margin-top:18px;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+            {% if abonnement_actif %}Changer — Payer en ligne{% else %}Payer en ligne{% endif %}
+          </button>
+        </form>
+        <form method="post" action="{% url 'souscrire-cash-web' plan.id %}" style="margin-top:8px;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-ghost" style="width:100%; justify-content:center;">Payer en espèces</button>
+        </form>
+      </div>
+      {% empty %}
+      <p>Aucun plan disponible pour l'instant. Contactez l'administrateur de la plateforme.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

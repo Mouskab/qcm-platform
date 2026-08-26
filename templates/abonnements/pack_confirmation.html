@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titre %}Achat enregistré — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center;">
+    <span class="eyebrow">Achat enregistré</span>
+    <h1 class="display-2" style="margin:16px 0;">Plus qu'une étape</h1>
+    <p class="lede" style="margin:0 auto 28px;">
+      Votre achat du pack <strong>{{ achat.pack.nom }}</strong>
+      ({{ achat.pack.prix }} {{ achat.pack.devise }}) a bien été enregistré.
+      Réglez par Mobile Money ou en espèces pour l'activer.
+    </p>
+    <a href="{% url 'packs-web' %}" class="btn btn-ghost">Retour aux packs</a>
+  </div>
+</section>
+{% endblock %}

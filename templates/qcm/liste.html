@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titre %}Mes QCM — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <div class="dashboard-header">
+      <div><span class="eyebrow">Tableau de bord</span><h1 class="display-2">Mes QCM</h1></div>
+      <a href="{% url 'qcm-creer-web' %}" class="btn btn-primary">+ Nouveau QCM</a>
+    </div>
+
+    {% if qcms %}
+    <table class="dj-table">
+      <thead><tr><th>Titre</th><th>Thématique</th><th>Visibilité</th><th>Questions</th><th>Statut</th><th></th></tr></thead>
+      <tbody>
+        {% for qcm in qcms %}
+        <tr>
+          <td>{{ qcm.titre }}</td>
+          <td>{{ qcm.thematique }}</td>
+          <td>{% if qcm.est_public %}<span class="badge public">Public</span>{% else %}<span class="badge prive">Privé</span>{% endif %}</td>
+          <td>{{ qcm.questions.count }}</td>
+          <td>{% if qcm.actif %}Actif{% else %}Inactif{% endif %}</td>
+          <td class="actions">
+            <a href="{% url 'qcm-questions-web' qcm.pk %}">Questions</a>
+            <a href="{% url 'qcm-modifier-web' qcm.pk %}">Modifier</a>
+            <a href="{% url 'qcm-supprimer-web' qcm.pk %}">Supprimer</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>Aucun QCM pour l'instant.</p>
+      <a href="{% url 'qcm-creer-web' %}" class="btn btn-primary">Créer votre premier QCM</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

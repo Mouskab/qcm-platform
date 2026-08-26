@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titre %}Corriger — {{ tentative.qcm.titre }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">{{ tentative.qcm.titre }} · {{ tentative.utilisateur.username }}</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Correction manuelle</h1>
+
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {% for reponse in reponses_texte %}
+      <div class="correction-item">
+        <p class="resultat-question-enonce">{{ reponse.question.enonce }}</p>
+        <p class="resultat-texte-libre">« {{ reponse.texte_saisi|default:"(réponse vide)" }} »</p>
+        <label>
+          Points attribués (max {{ reponse.question.points }})
+          <input type="number" step="0.01" min="0" max="{{ reponse.question.points }}"
+                 name="points_{{ reponse.id }}"
+                 value="{{ reponse.points_attribues|default_if_none:'' }}">
+        </label>
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary">Enregistrer la correction</button>
+      <a href="{% url 'a-corriger-liste-web' %}" class="btn btn-ghost">Retour</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

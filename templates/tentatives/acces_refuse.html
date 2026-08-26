@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center;">
+    {% if motif == "quota_atteint" %}
+      <span class="eyebrow">Quota atteint</span>
+      <h1 class="display-2" style="margin:16px 0;">Vous avez fait le plein pour aujourd'hui !</h1>
+      <p class="lede" style="margin:0 auto 28px;">
+        Vous avez utilisé tous vos QCM gratuits du jour. Revenez demain,
+        ou passez en illimité dès maintenant.
+      </p>
+    {% else %}
+      <span class="eyebrow">Accès restreint</span>
+      <h1 class="display-2" style="margin:16px 0;">Abonnement de l'organisation requis</h1>
+      <p class="lede" style="margin:0 auto 28px;">
+        L'abonnement de votre organisation n'est pas actif. Contactez votre administrateur.
+      </p>
+    {% endif %}
+    <a href="{% url 'plans-web' %}" class="btn btn-primary">Voir les abonnements</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titre %}{{ organisation.nom_affiche|default:organisation.nom }}{% endblock %}
+
+{% block styles_org %}
+<style>
+  :root {
+    --org-primary: {{ organisation.couleur_primaire|default:"#16233F" }};
+    --org-secondary: {{ organisation.couleur_secondaire|default:"#D9A441" }};
+  }
+  .brand-logo { background: var(--org-primary); }
+  .btn-primary { background: var(--org-primary); }
+</style>
+{% endblock %}
+
+{% block logo_header %}
+  {% if organisation.logo %}
+    <img src="{{ organisation.logo.url }}" alt="{{ organisation.nom }}">
+  {% else %}
+    {{ organisation.nom|slice:":1" }}
+  {% endif %}
+{% endblock %}
+
+{% block nom_header %}{{ organisation.nom_affiche|default:organisation.nom }}{% endblock %}
+{% block nom_footer %}{{ organisation.nom_affiche|default:organisation.nom }}{% endblock %}
+
+{% block contenu %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <span class="eyebrow">{{ organisation.nom }}</span>
+      <h1 class="display-1">Bienvenue chez {{ organisation.nom_affiche|default:organisation.nom }}.</h1>
+      <p class="lede">Retrouvez ici les QCM proposés par votre organisation.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">Voir mes QCM</a>
+        <a href="#" class="btn btn-ghost">Se connecter</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

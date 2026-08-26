@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titre %}Paiement en attente — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:520px;">
+    <span class="eyebrow">Paiement enregistré</span>
+    <h1 class="display-2" style="margin:16px 0; text-align:center;">En attente de validation</h1>
+    <p class="lede" style="margin:0 auto 8px; text-align:center;">
+      Montant : <strong>{{ paiement.montant }} {{ paiement.devise }}</strong>
+    </p>
+    <p style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-ink-soft); margin-bottom:28px; text-align:center;">
+      Référence : {{ paiement.reference_interne }}
+    </p>
+
+    {% if preuve_envoyee %}
+    <div class="quota-banner" style="border-color:var(--color-success); margin-bottom:24px;">
+      ✅ Votre preuve de paiement a bien été envoyée. Un administrateur va la traiter rapidement.
+    </div>
+    {% elif paiement.preuve_paiement %}
+    <div class="quota-banner" style="margin-bottom:24px;">
+      Une preuve de paiement est déjà enregistrée pour cette demande.
+    </div>
+    {% else %}
+    <div class="branding-mock" style="text-align:left; margin-bottom:24px; padding:20px 24px;">
+      <p style="font-size:0.9rem; color:var(--color-ink-soft); margin-bottom:14px;">
+        Réglez le montant par Mobile Money ou en espèces auprès d'un représentant Zamse,
+        puis joignez une preuve (capture d'écran de la confirmation, ou photo du reçu)
+        pour accélérer la validation de votre accès.
+      </p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Envoyer ma preuve de paiement</button>
+    </form>
+    {% endif %}
+
+    <a href="{% url 'plans-web' %}" class="btn btn-ghost" style="margin-top:16px; display:block; text-align:center;">Retour aux abonnements</a>
+  </div>
+</section>
+{% endblock %}

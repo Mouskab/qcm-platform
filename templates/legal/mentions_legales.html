@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titre %}Mentions légales — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">Informations légales</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Mentions légales</h1>
+
+    <div class="legal-content">
+      <h3>Éditeur du site</h3>
+      <p>Zamse est édité par [Nom de l'entreprise/entrepreneur à compléter], immatriculé sous le numéro [RCCM à compléter], dont le siège est situé à Ouagadougou, Burkina Faso.</p>
+      <p>Contact : contact@zamse.local</p>
+
+      <h3>Directeur de publication</h3>
+      <p>[Nom à compléter]</p>
+
+      <h3>Hébergement</h3>
+      <p>Le site est hébergé par [Hébergeur à compléter], dont les coordonnées sont disponibles sur demande.</p>
+
+      <h3>Propriété intellectuelle</h3>
+      <p>L'ensemble des contenus présents sur Zamse (textes, questions, mise en page, logo, identité visuelle) est protégé par le droit d'auteur. Toute reproduction sans autorisation préalable est interdite, à l'exception des contenus créés par les utilisateurs dans le cadre normal d'utilisation du service.</p>
+
+      <h3>Responsabilité</h3>
+      <p>Zamse met tout en œuvre pour assurer l'exactitude des contenus pédagogiques, sans garantir un résultat particulier à un examen ou concours. L'utilisateur reste seul responsable de sa préparation.</p>
+    </div>
+
+    <a href="{% url 'index' %}" class="btn btn-ghost" style="margin-top:28px;">← Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

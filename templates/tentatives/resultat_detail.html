@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block titre %}Résultat — {{ tentative.qcm.titre }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">{{ tentative.qcm.titre }}</span>
+    <h1 class="display-2" style="margin-bottom:8px;">
+      {% if tentative.statut == "attente_correction" %}
+        En attente de correction
+      {% else %}
+        {{ tentative.score_obtenu }} / {{ tentative.score_max }}
+      {% endif %}
+    </h1>
+    <p class="lede" style="margin-bottom:32px;">
+      {% if tentative.statut == "attente_correction" %}
+        Une ou plusieurs questions à réponse libre doivent être corrigées manuellement.
+        Le score final sera mis à jour une fois la correction faite.
+      {% else %}
+        Tentative passée le {{ tentative.date_debut|date:"d/m/Y à H:i" }}.
+      {% endif %}
+    </p>
+
+    <div class="resultat-detail">
+      {% for reponse in tentative.reponses_utilisateur.all %}
+      <div class="resultat-question">
+        <p class="resultat-question-enonce">{{ reponse.question.enonce }}</p>
+        {% if reponse.question.type_question == "texte_libre" %}
+          <p class="resultat-texte-libre">« {{ reponse.texte_saisi }} »</p>
+          {% if reponse.points_attribues is None %}
+            <span class="badge prive">En attente de correction</span>
+          {% else %}
+            <span class="badge public">{{ reponse.points_attribues }} / {{ reponse.question.points }} points</span>
+          {% endif %}
+        {% else %}
+          <ul class="resultat-reponses">
+            {% for r in reponse.question.reponses.all %}
+            <li class="{% if r in reponse.reponses_choisies.all %}choisie{% endif %} {% if r.est_correcte %}correcte{% endif %}">
+              {{ r.texte }}
+              {% if r.est_correcte %} ✓{% endif %}
+              {% if r in reponse.reponses_choisies.all and not r.est_correcte %} (votre choix){% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          <span class="badge {% if reponse.points_attribues == reponse.question.points %}public{% else %}prive{% endif %}">
+            {{ reponse.points_attribues }} / {{ reponse.question.points }} points
+          </span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <a href="{% url 'mes-resultats-web' %}" class="btn btn-ghost" style="margin-top:28px;">← Mes résultats</a>
+    <a href="{% url 'qcm-classement-web' tentative.qcm.pk %}" class="btn btn-ghost" style="margin-top:28px;">Voir le classement 🏆</a>
+    <a href="{% url 'evolution-qcm-web' tentative.qcm.pk %}" class="btn btn-ghost" style="margin-top:12px;">📈 Voir ma progression</a>
+  </div>
+</section>
+{% endblock %}

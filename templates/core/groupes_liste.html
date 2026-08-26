@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titre %}Groupes — {{ user.organisation.nom }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <div class="dashboard-header">
+      <div><span class="eyebrow">{{ user.organisation.nom }}</span><h1 class="display-2">Groupes</h1></div>
+      <a href="{% url 'groupe-creer' %}" class="btn btn-primary">+ Nouveau groupe</a>
+    </div>
+
+    {% if groupes %}
+    <table class="dj-table">
+      <thead><tr><th>Nom</th><th>Membres</th><th></th></tr></thead>
+      <tbody>
+        {% for groupe in groupes %}
+        <tr>
+          <td>{{ groupe.nom }}</td>
+          <td>{{ groupe.membres.count }}</td>
+          <td class="actions">
+            <a href="{% url 'groupe-modifier' groupe.pk %}">Modifier</a>
+            <a href="{% url 'groupe-supprimer' groupe.pk %}">Supprimer</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>Aucun groupe pour l'instant.</p>
+      <a href="{% url 'groupe-creer' %}" class="btn btn-primary">Créer votre premier groupe</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

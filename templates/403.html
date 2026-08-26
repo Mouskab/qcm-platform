@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titre %}Accès refusé — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center; padding:80px 20px;">
+    <span class="eyebrow">Erreur 403</span>
+    <h1 class="display-2" style="margin:16px 0;">Accès refusé.</h1>
+    <p class="lede" style="margin:0 auto 28px;">Vous n'avez pas les droits nécessaires pour consulter cette page.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titre %}Importer des questions — {{ qcm.titre }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:680px;">
+    <span class="eyebrow">{{ qcm.titre }}</span>
+    <h1 class="display-2" style="margin-bottom:20px;">Importer des questions depuis Excel</h1>
+
+    <div class="branding-mock" style="text-align:left; margin-bottom:28px; padding:20px 24px;">
+      <p style="font-size:0.9rem; color:var(--color-ink-soft); margin-bottom:10px;">
+        Une ligne = une question. Colonnes attendues : <strong>Question</strong>, <strong>Type</strong>
+        (<code>choix_unique</code>, <code>choix_multiple</code> ou <code>texte_libre</code>), <strong>Points</strong>,
+        puis <strong>Reponse1</strong>/<strong>Reponse1_Correcte</strong> (Oui/Non), et ainsi de suite jusqu'à Reponse6.
+      </p>
+      <a href="{% url 'modele-import-questions' %}" class="btn btn-ghost">Télécharger le modèle Excel</a>
+    </div>
+
+    {% if nb_importees %}
+    <div class="quota-banner" style="border-color:var(--color-success); margin-bottom:24px;">
+      ✅ {{ nb_importees }} question{{ nb_importees|pluralize }} importée{{ nb_importees|pluralize }} avec succès.
+    </div>
+    {% endif %}
+
+    {% if erreurs %}
+    <div class="quota-banner" style="border-color:var(--color-clay); margin-bottom:24px;">
+      <strong>L'import a échoué — corrigez ces erreurs et réessayez :</strong>
+      <ul style="margin-top:8px; padding-left:20px; font-size:0.88rem;">
+        {% for erreur in erreurs %}
+        <li>{{ erreur }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Importer</button>
+      <a href="{% url 'qcm-questions-web' qcm.pk %}" class="btn btn-ghost">Retour aux questions</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titre %}Conditions générales d'utilisation — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">Contrat d'utilisation</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Conditions générales d'utilisation</h1>
+
+    <div class="legal-content">
+      <h3>1. Objet</h3>
+      <p>Les présentes conditions régissent l'utilisation de la plateforme Zamse, service de création et de passage de QCM en ligne, accessible via le web et l'application mobile.</p>
+
+      <h3>2. Création de compte</h3>
+      <p>L'utilisateur s'engage à fournir des informations exactes lors de son inscription et à garder ses identifiants confidentiels. Un compte est personnel et ne doit pas être partagé.</p>
+
+      <h3>3. Abonnements et paiements</h3>
+      <p>Certains contenus sont accessibles gratuitement dans la limite d'un quota quotidien. L'accès complet nécessite un abonnement ou l'achat d'un pack, payable par Mobile Money ou en espèces auprès d'un représentant. Les tarifs sont indiqués sur la page Tarifs et peuvent évoluer.</p>
+
+      <h3>4. Résiliation</h3>
+      <p>L'utilisateur peut cesser d'utiliser le service à tout moment. Zamse se réserve le droit de suspendre un compte en cas d'utilisation frauduleuse ou de non-respect des présentes conditions.</p>
+
+      <h3>5. Contenu des QCM</h3>
+      <p>Les organisations et créateurs de contenu sont responsables de l'exactitude des QCM qu'ils publient. Zamse ne garantit pas l'exhaustivité ou l'actualité de tous les contenus proposés par des tiers.</p>
+
+      <h3>6. Remboursement</h3>
+      <p>Les paiements effectués pour un abonnement ou un pack ne sont remboursables qu'en cas d'erreur technique avérée, sur demande écrite à contact@zamse.local.</p>
+
+      <h3>7. Modification des conditions</h3>
+      <p>Zamse peut modifier ces conditions à tout moment. Les utilisateurs seront informés des changements substantiels.</p>
+    </div>
+
+    <a href="{% url 'index' %}" class="btn btn-ghost" style="margin-top:28px;">← Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

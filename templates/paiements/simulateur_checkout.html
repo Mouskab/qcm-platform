@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block titre %}Simulateur de paiement{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:480px; text-align:center;">
+    <span class="eyebrow">⚠️ Mode développement</span>
+    <h1 class="display-2" style="margin:16px 0;">Simulateur de paiement</h1>
+    <p class="lede" style="margin:0 auto 8px;">
+      Cette page remplace temporairement la vraie page CinetPay/PayDunya, en attendant un compte marchand actif.
+    </p>
+    <p style="font-family:var(--font-mono); font-size:0.85rem; color:var(--color-ink-soft); margin-bottom:28px;">
+      {{ paiement.montant }} {{ paiement.devise }}
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="reference_interne" value="{{ paiement.reference_interne }}">
+      <button type="submit" name="action" value="valide" class="btn btn-primary" style="width:100%; margin-bottom:10px;">
+        ✅ Simuler un paiement réussi
+      </button>
+      <button type="submit" name="action" value="refuse" class="btn btn-ghost" style="width:100%;">
+        ❌ Simuler un paiement échoué
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

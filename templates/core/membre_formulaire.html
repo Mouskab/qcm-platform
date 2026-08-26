@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titre %}Ajouter un membre{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px;">
+    <span class="eyebrow">{{ user.organisation.nom }}</span>
+    <h1 class="display-2" style="margin-bottom:12px;">Ajouter un membre</h1>
+    <p class="lede" style="margin-bottom:28px;">
+      Un mot de passe temporaire sera généré automatiquement et envoyé par e-mail
+      (affiché dans le terminal du serveur en développement).
+    </p>
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Créer le compte</button>
+      <a href="{% url 'membres-liste' %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

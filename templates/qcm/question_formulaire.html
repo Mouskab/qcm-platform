@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">{{ qcm.titre }}</span>
+    <h1 class="display-2" style="margin-bottom:32px;">Nouvelle question</h1>
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <h3 style="margin:28px 0 14px;">Réponses possibles</h3>
+      {{ formset.management_form }}
+      {% for reponse_form in formset %}
+      <div class="formset-item">
+        <div class="row-inline">
+          <div class="form-control-texte">{{ reponse_form.texte }}</div>
+          <label style="white-space:nowrap;">{{ reponse_form.est_correcte }} Correcte</label>
+        </div>
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary">Enregistrer la question</button>
+      <a href="{% url 'qcm-questions-web' qcm.pk %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

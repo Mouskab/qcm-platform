@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titre %}Souscription enregistrée — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center;">
+    <span class="eyebrow">Souscription enregistrée</span>
+    <h1 class="display-2" style="margin:16px 0;">Plus qu'une étape</h1>
+    <p class="lede" style="margin:0 auto 28px;">
+      Votre demande pour le plan <strong>{{ abonnement.plan.nom }}</strong>
+      ({{ abonnement.plan.prix }} {{ abonnement.plan.devise }}) a bien été enregistrée.
+    </p>
+
+    <div class="branding-mock" style="text-align:left; margin-bottom:28px;">
+      <div class="branding-mock-body">
+        <p style="font-size:0.9rem; color:var(--color-ink-soft); margin-bottom:10px;">
+          Pour activer votre abonnement, réglez le montant par :
+        </p>
+        <ul style="font-size:0.9rem; color:var(--color-ink-soft); padding-left:18px;">
+          <li>Mobile Money (Orange Money, Moov Money)</li>
+          <li>Espèces, auprès d'un représentant Zamse</li>
+        </ul>
+        <p style="font-size:0.85rem; color:var(--color-ink-soft); margin-top:14px;">
+          Votre accès sera activé automatiquement dès réception du paiement.
+        </p>
+      </div>
+    </div>
+
+    <a href="{% url 'qcm-catalogue-web' %}" class="btn btn-ghost">Retour au catalogue</a>
+  </div>
+</section>
+{% endblock %}

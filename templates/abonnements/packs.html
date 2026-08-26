@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titre %}Packs par concours — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <span class="eyebrow">Packs par concours</span>
+    <h1 class="display-2" style="margin-bottom:12px;">Accès ciblé, sans abonnement</h1>
+    <p class="lede" style="margin-bottom:32px;">Achetez l'accès permanent aux QCM d'un concours précis.</p>
+
+    <div class="pricing-grid">
+      {% for pack in packs %}
+      <div class="price-card">
+        <span class="tag">{{ pack.thematique.nom }}</span>
+        <h3>{{ pack.nom }}</h3>
+        <p style="font-size:0.88rem; color:var(--color-ink-soft); margin-bottom:14px;">{{ pack.description }}</p>
+        <div class="price-amount">{{ pack.prix }} {{ pack.devise }}</div>
+
+        {% if pack.id in packs_possedes %}
+          <span class="badge public" style="margin-top:18px; display:inline-block;">Déjà acquis</span>
+        {% else %}
+          <form method="post" action="{% url 'acheter-pack-web' pack.id %}" style="margin-top:18px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Payer en ligne</button>
+          </form>
+          <form method="post" action="{% url 'acheter-pack-cash-web' pack.id %}" style="margin-top:8px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost" style="width:100%; justify-content:center;">Payer en espèces</button>
+          </form>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p>Aucun pack disponible pour l'instant.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

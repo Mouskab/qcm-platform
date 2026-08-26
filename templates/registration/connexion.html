@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titre %}Connexion — Zamse{% endblock %}
+{% block contenu %}
+<div class="auth-page">
+  <div class="auth-card">
+    <span class="eyebrow">Zamse</span>
+    <h1>Connexion</h1>
+    <p class="lede">Accédez à votre espace.</p>
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Se connecter</button>
+    </form>
+    <p class="auth-switch"><a href="{% url 'password_reset' %}">Mot de passe oublié ?</a></p>
+    <p class="auth-switch">Pas encore de compte ? <a href="{% url 'inscription-web' %}">Créer un compte</a></p>
+  </div>
+</div>
+{% endblock %}

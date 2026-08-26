@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titre %}Mes résultats — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <span class="eyebrow">Historique</span>
+    <h1 class="display-2" style="margin-bottom:32px;">Mes résultats</h1>
+
+    {% if tentatives %}
+    <table class="dj-table">
+      <thead><tr><th>QCM</th><th>Date</th><th>Score</th><th>Statut</th><th></th></tr></thead>
+      <tbody>
+        {% for tentative in tentatives %}
+        <tr>
+          <td>{{ tentative.qcm.titre }}</td>
+          <td>{{ tentative.date_debut|date:"d/m/Y H:i" }}</td>
+          <td>{% if tentative.score_obtenu is not None %}{{ tentative.score_obtenu }} / {{ tentative.score_max }}{% else %}—{% endif %}</td>
+          <td>{{ tentative.get_statut_display }}</td>
+          <td><a href="{% url 'resultat-tentative-web' tentative.pk %}">Voir le détail</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>Aucune tentative pour l'instant.</p>
+      <a href="{% url 'qcm-catalogue-web' %}" class="btn btn-primary">Voir les QCM disponibles</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% include "partials/pagination.html" %}
+{% endblock %}

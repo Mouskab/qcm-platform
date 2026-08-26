@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titre %}Retirer un membre{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px;">
+    <h1 class="display-2">Retirer « {{ object.username }} » ?</h1>
+    <p class="lede" style="margin:16px 0 28px;">
+      Cette personne perdra l'accès à l'espace de votre organisation. Cette action est irréversible.
+    </p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" style="background:var(--color-clay)">Confirmer</button>
+      <a href="{% url 'membres-liste' %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

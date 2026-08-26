@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titre %}Politique de confidentialité — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">Vos données</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Politique de confidentialité</h1>
+
+    <div class="legal-content">
+      <h3>Données collectées</h3>
+      <p>Lors de votre inscription et de votre utilisation de Zamse, nous collectons : votre nom d'utilisateur, votre adresse e-mail, votre numéro de téléphone (facultatif), vos résultats aux QCM, et les informations liées à vos paiements (montant, date, statut — jamais vos identifiants Mobile Money ou bancaires, qui transitent uniquement par notre prestataire de paiement).</p>
+
+      <h3>Utilisation des données</h3>
+      <p>Ces données servent exclusivement à : faire fonctionner votre compte et vos abonnements, calculer vos statistiques de progression, vous envoyer des communications liées à votre compte (confirmations, reçus). Elles ne sont jamais vendues à des tiers.</p>
+
+      <h3>Conservation</h3>
+      <p>Vos données sont conservées tant que votre compte est actif. Vous pouvez demander leur suppression à tout moment en nous contactant.</p>
+
+      <h3>Vos droits</h3>
+      <p>Vous pouvez demander l'accès, la rectification ou la suppression de vos données personnelles en écrivant à contact@zamse.local.</p>
+
+      <h3>Cookies</h3>
+      <p>Zamse utilise uniquement des cookies techniques nécessaires au fonctionnement du site (maintien de la connexion). Aucun cookie publicitaire ou de suivi tiers n'est utilisé.</p>
+
+      <h3>Sécurité</h3>
+      <p>Les mots de passe sont chiffrés et jamais stockés en clair. Les échanges avec le site sont sécurisés.</p>
+    </div>
+
+    <a href="{% url 'index' %}" class="btn btn-ghost" style="margin-top:28px;">← Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block titre %}Paiements à valider — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <span class="eyebrow">Administration</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Paiements à valider</h1>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="quota-banner" style="border-color:{% if message.tags == 'success' %}var(--color-success){% else %}var(--color-clay){% endif %}; margin-bottom:20px;">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if paiements %}
+    <div class="paiements-liste">
+      {% for paiement in paiements %}
+      <div class="paiement-carte">
+        <div class="paiement-carte-info">
+          <div>
+            <strong>{{ paiement.utilisateur.username }}</strong>
+            <span class="paiement-cible">
+              {% if paiement.abonnement %}{{ paiement.abonnement.plan.nom }} ({{ paiement.abonnement.plan.get_duree_display }}){% else %}{{ paiement.achat_pack.pack.nom }}{% endif %}
+            </span>
+          </div>
+          <div class="paiement-montant">{{ paiement.montant }} {{ paiement.devise }}</div>
+        </div>
+
+        <div class="paiement-meta">
+          <span>{{ paiement.get_mode_display }}</span>
+          <span>{{ paiement.date_creation|date:"d/m/Y H:i" }}</span>
+          <span class="paiement-ref">{{ paiement.reference_interne }}</span>
+        </div>
+
+        {% if paiement.preuve_paiement %}
+        <a href="{{ paiement.preuve_paiement.url }}" target="_blank" class="paiement-preuve">
+          <img src="{{ paiement.preuve_paiement.url }}" alt="Preuve de paiement">
+          <span>Voir en grand</span>
+        </a>
+        {% else %}
+        <p class="paiement-sans-preuve">Aucune preuve jointe pour l'instant.</p>
+        {% endif %}
+
+        <div class="paiement-actions">
+          <form method="post" action="{% url 'paiement-valider' paiement.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">✓ Valider</button>
+          </form>
+          <form method="post" action="{% url 'paiement-refuser' paiement.id %}" onsubmit="return confirm('Refuser ce paiement ?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost">✗ Refuser</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><p>Aucun paiement en attente pour l'instant.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

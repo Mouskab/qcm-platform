@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titre %}Requête invalide — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px; text-align:center; padding:80px 20px;">
+    <span class="eyebrow">Erreur 400</span>
+    <h1 class="display-2" style="margin:16px 0;">Requête invalide.</h1>
+    <p class="lede" style="margin:0 auto 28px;">La demande envoyée au serveur n'a pas pu être traitée.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary">Retour à l'accueil</a>
+  </div>
+</section>
+{% endblock %}

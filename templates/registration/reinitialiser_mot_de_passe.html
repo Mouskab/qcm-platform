@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block contenu %}
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Nouveau mot de passe</h1>
+    {% if validlink %}
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Enregistrer</button>
+    </form>
+    {% else %}
+    <p class="lede">Ce lien de réinitialisation n'est plus valide.</p>
+    <a href="{% url 'password_reset' %}" class="btn btn-primary">Demander un nouveau lien</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

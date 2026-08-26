@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titre %}À corriger — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <span class="eyebrow">Correction manuelle</span>
+    <h1 class="display-2" style="margin-bottom:32px;">Tentatives à corriger</h1>
+
+    {% if tentatives %}
+    <table class="dj-table">
+      <thead><tr><th>Candidat</th><th>QCM</th><th>Soumis le</th><th></th></tr></thead>
+      <tbody>
+        {% for tentative in tentatives %}
+        <tr>
+          <td>{{ tentative.utilisateur.username }}</td>
+          <td>{{ tentative.qcm.titre }}</td>
+          <td>{{ tentative.date_debut|date:"d/m/Y H:i" }}</td>
+          <td><a href="{% url 'corriger-tentative-web' tentative.pk %}" class="btn btn-ghost">Corriger</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><p>Aucune tentative en attente de correction.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

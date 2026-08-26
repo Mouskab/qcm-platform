@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:560px;">
+    <h1 class="display-2">Supprimer « {{ object.nom }} » ?</h1>
+    <p class="lede" style="margin:16px 0 28px;">
+      Les membres ne seront pas supprimés, seulement retirés de ce groupe. Les QCM restreints
+      à ce groupe redeviendront visibles à toute l'organisation si aucun autre groupe ne les couvre.
+    </p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" style="background:var(--color-clay)">Confirmer</button>
+      <a href="{% url 'groupes-liste' %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

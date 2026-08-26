@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titre %}Zamse — Plateforme de QCM{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Créez, diffusez et passez des QCM en ligne. Pour les organisations et les candidats aux concours.{% endblock %}">
+  <meta property="og:title" content="{% block og_titre %}Zamse — Plateforme de QCM{% endblock %}">
+  <meta property="og:description" content="Préparez vos concours et examens avec Zamse — QCM en ligne, sur le web et mobile.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+  {% block styles_org %}
+  {# Surchargé par les pages d'organisation pour injecter leur branding (couleurs, logo) #}
+  {% endblock %}
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="{% url 'index' %}" class="brand">
+        <span class="brand-logo">
+          {% block logo_header %}
+          <svg viewBox="0 0 56 80" width="20" height="28" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 5 L45 5 L45 75 L27 60 L10 75 Z" fill="#FFFFFF"/>
+            <path d="M37 19 L55 19 L23 61 L5 61 Z" fill="#D9A441"/>
+          </svg>
+          {% endblock %}
+        </span>
+        {% block nom_header %}Zamse{% endblock %}
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="{% url 'index' %}#pour-qui">Pour qui</a></li>
+        <li><a href="{% url 'index' %}#fonctionnement">Fonctionnement</a></li>
+        <li><a href="{% url 'index' %}#organisations">Organisations</a></li>
+        <li><a href="{% url 'index' %}#tarifs">Tarifs</a></li>
+      </ul>
+
+      <div class="header-actions">
+        <button id="toggle-theme" class="btn-theme" type="button" aria-label="Changer de thème">
+          <span id="icone-theme">🌙</span>
+        </button>
+
+        {% if user.is_authenticated %}
+          <div class="user-menu">
+            <button class="user-menu-trigger" id="user-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+              <span class="user-avatar">{{ user.username|slice:":1"|upper }}</span>
+              <span class="user-menu-name">{{ user.username }}</span>
+              <svg class="chevron" viewBox="0 0 12 12" width="10" height="10">
+                <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </button>
+
+            <div class="user-menu-dropdown" id="user-menu-dropdown">
+              <div class="user-menu-group">
+                <span class="user-menu-label">Compte</span>
+                <a href="{% url 'profil-web' %}">Mon profil</a>
+              </div>
+
+              <div class="user-menu-group">
+                <span class="user-menu-label">Candidat</span>
+                <a href="{% url 'qcm-catalogue-web' %}">QCM disponibles</a>
+                <a href="{% url 'mes-resultats-web' %}">Mes résultats</a>
+                <a href="{% url 'plans-web' %}">Mon abonnement</a>
+              </div>
+
+              {% if user.role == "createur" or user.role == "admin_org" or user.role == "super_admin" %}
+              <div class="user-menu-group">
+                <span class="user-menu-label">Gestion des QCM</span>
+                <a href="{% url 'qcm-liste-web' %}">Mes QCM</a>
+                <a href="{% url 'a-corriger-liste-web' %}">
+                  À corriger
+                  {% if nb_corrections_a_faire %}
+                  <span class="badge-notification">{{ nb_corrections_a_faire }}</span>
+                  {% endif %}
+                </a>
+              </div>
+              {% endif %}
+
+              {% if user.role == "admin_org" %}
+              <div class="user-menu-group">
+                <span class="user-menu-label">Organisation</span>
+                <a href="{% url 'dashboard-organisation-web' %}">Tableau de bord</a>
+                <a href="{% url 'membres-liste' %}">Membres</a>
+                <a href="{% url 'groupes-liste' %}">Groupes</a>
+                <a href="{% url 'organisation-branding' %}">Personnaliser</a>
+              </div>
+              {% endif %}
+
+              {% if user.role == "super_admin" and nb_paiements_a_valider %}
+              <div class="user-menu-group">
+                <span class="user-menu-label">Administration</span>
+                <a href="{% url 'paiements-a-valider' %}">
+                  Paiements à valider
+                  <span class="badge-notification">{{ nb_paiements_a_valider }}</span>
+                </a>
+              </div>
+              {% endif %}
+
+              <div class="user-menu-group user-menu-group-footer">
+                <form method="post" action="{% url 'deconnexion' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="user-menu-logout">Déconnexion</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'connexion' %}" class="btn btn-ghost">Connexion</a>
+          <a href="{% url 'inscription-web' %}" class="btn btn-primary">Créer un compte</a>
+        {% endif %}
+        <button class="nav-toggle" aria-label="Menu" type="button">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {% block contenu %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>{% block nom_footer %}Zamse{% endblock %}</strong>
+        <p>Plateforme de QCM — Web &amp; Mobile.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="{% url 'mentions-legales' %}">Mentions légales</a></li>
+        <li><a href="mailto:contact@zamse.local">Contact</a></li>
+        <li><a href="{% url 'confidentialite' %}">Confidentialité</a></li>
+        <li><a href="{% url 'cgu' %}">CGU</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+  (function() {
+    const bouton = document.getElementById("toggle-theme");
+    const icone = document.getElementById("icone-theme");
+    const theme = localStorage.getItem("theme") || "clair";
+
+    function appliquer(theme) {
+      if (theme === "sombre") {
+        document.documentElement.setAttribute("data-theme", "sombre");
+        icone.textContent = "☀️";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        icone.textContent = "🌙";
+      }
+    }
+
+    appliquer(theme);
+
+    bouton.addEventListener("click", () => {
+      const actuel = document.documentElement.getAttribute("data-theme") === "sombre" ? "clair" : "sombre";
+      localStorage.setItem("theme", actuel);
+      appliquer(actuel);
+    });
+  })();
+  </script>
+  {% block scripts_extra %}{% endblock %}
+</body>
+</html>

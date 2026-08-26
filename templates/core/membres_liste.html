@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titre %}Membres de mon organisation{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <div class="dashboard-header">
+      <div><span class="eyebrow">{{ user.organisation.nom }}</span><h1 class="display-2">Membres</h1></div>
+      <a href="{% url 'membre-ajouter' %}" class="btn btn-primary">+ Ajouter un membre</a>
+    </div>
+
+    {% if membres %}
+    <table class="dj-table">
+      <thead><tr><th>Nom d'utilisateur</th><th>E-mail</th><th>Rôle</th><th></th></tr></thead>
+      <tbody>
+        {% for membre in membres %}
+        <tr>
+          <td>{{ membre.username }}</td>
+          <td>{{ membre.email }}</td>
+          <td>{{ membre.get_role_display }}</td>
+          <td class="actions">
+            <a href="{% url 'membre-modifier' membre.pk %}">Modifier</a>
+            <a href="{% url 'membre-supprimer' membre.pk %}">Retirer</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>Aucun membre pour l'instant.</p>
+      <a href="{% url 'membre-ajouter' %}" class="btn btn-primary">Ajouter votre premier membre</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% include "partials/pagination.html" %}
+{% endblock %}

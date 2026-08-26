@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titre %}Paiement en espèces — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:520px; text-align:center;">
+    <span class="eyebrow">Paiement en espèces</span>
+    <h1 class="display-2" style="margin:16px 0;">Une dernière étape</h1>
+    <p class="lede" style="margin:0 auto 8px;">
+      Montant à régler : <strong>{{ paiement.montant }} {{ paiement.devise }}</strong>
+    </p>
+    <p style="font-family:var(--font-mono); font-size:0.8rem; color:var(--color-ink-soft); margin-bottom:28px;">
+      Référence : {{ paiement.reference_interne }}
+    </p>
+
+    <div class="branding-mock" style="text-align:left; margin-bottom:28px; padding:20px 24px;">
+      <p style="font-size:0.9rem; color:var(--color-ink-soft);">
+        Rendez-vous auprès d'un représentant Zamse avec cette référence pour régler le montant en espèces.
+        Votre accès sera activé automatiquement dès que le paiement sera confirmé par un administrateur —
+        généralement sous quelques heures.
+      </p>
+    </div>
+
+    <a href="{% url 'plans-web' %}" class="btn btn-ghost">Retour aux abonnements</a>
+  </div>
+</section>
+{% endblock %}

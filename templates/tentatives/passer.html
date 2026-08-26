@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block titre %}{{ qcm.titre }} — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:720px;">
+    <span class="eyebrow">{{ qcm.thematique.nom }} · {{ qcm.duree_minutes }} min</span>
+    <h1 class="display-2" style="margin-bottom:32px;">{{ qcm.titre }}</h1>
+    <div class="qcm-timer-badge" id="qcm-timer">
+  <span id="qcm-timer-icone">⏱</span> <span id="qcm-timer-texte">--:--</span>
+</div>
+
+    <form method="post" class="quiz-form">
+      {% csrf_token %}
+      {% for question in questions %}
+      <div class="quiz-question">
+        <p class="quiz-question-enonce">{{ forloop.counter }}. {{ question.enonce }}</p>
+        {% if question.image %}<img src="{{ question.image.url }}" alt="" class="quiz-question-image">{% endif %}
+
+        {% if question.type_question == "choix_unique" %}
+          {% for reponse in question.reponses.all %}
+          <label class="quiz-option">
+            <input type="radio" name="question_{{ question.id }}" value="{{ reponse.id }}" required>
+            {{ reponse.texte }}
+          </label>
+          {% endfor %}
+
+        {% elif question.type_question == "choix_multiple" %}
+          {% for reponse in question.reponses.all %}
+          <label class="quiz-option">
+            <input type="checkbox" name="question_{{ question.id }}" value="{{ reponse.id }}">
+            {{ reponse.texte }}
+          </label>
+          {% endfor %}
+
+        {% else %}
+          <textarea name="question_{{ question.id }}" class="quiz-texte-libre" rows="4" placeholder="Votre réponse..."></textarea>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary">Soumettre mes réponses</button>
+    </form>
+  </div>
+</section>
+
+<script>
+(function() {
+  const DUREE_MINUTES = {{ qcm.duree_minutes }};
+  const CLE_STOCKAGE = "qcm_{{ qcm.id }}_debut";
+  const badge = document.getElementById("qcm-timer");
+  const texte = document.getElementById("qcm-timer-texte");
+  const formulaire = document.querySelector(".quiz-form");
+
+  // Persiste l'heure de début dans sessionStorage : un rechargement accidentel
+  // de la page ne remet PAS le chrono à zéro (contrairement à une simple variable JS).
+  let debut = sessionStorage.getItem(CLE_STOCKAGE);
+  if (!debut) {
+    debut = Date.now();
+    sessionStorage.setItem(CLE_STOCKAGE, debut);
+  } else {
+    debut = parseInt(debut, 10);
+  }
+
+  const dureeTotaleMs = DUREE_MINUTES * 60 * 1000;
+
+  function formaterTemps(ms) {
+    const secondesTotal = Math.max(0, Math.floor(ms / 1000));
+    const minutes = Math.floor(secondesTotal / 60);
+    const secondes = secondesTotal % 60;
+    return String(minutes).padStart(2, "0") + ":" + String(secondes).padStart(2, "0");
+  }
+
+  function soumettreAutomatiquement() {
+    sessionStorage.removeItem(CLE_STOCKAGE);
+    texte.textContent = "00:00";
+    badge.classList.add("qcm-timer-expire");
+    // Soumet le formulaire tel quel : les questions non répondues restent vides,
+    // comptées comme incorrectes côté serveur (comportement normal, pas une erreur).
+    formulaire.submit();
+  }
+
+  function mettreAJour() {
+    const ecoule = Date.now() - debut;
+    const restant = dureeTotaleMs - ecoule;
+
+    if (restant <= 0) {
+      soumettreAutomatiquement();
+      return;
+    }
+
+    texte.textContent = formaterTemps(restant);
+    if (restant < 60000) {
+      badge.classList.add("qcm-timer-urgent");
+    }
+  }
+
+  mettreAJour();
+  const intervalle = setInterval(mettreAJour, 1000);
+
+  // Nettoie le chrono stocké si l'utilisateur soumet manuellement avant expiration
+  if (formulaire) {
+    formulaire.addEventListener("submit", () => {
+      clearInterval(intervalle);
+      sessionStorage.removeItem(CLE_STOCKAGE);
+    });
+  }
+})();
+</script>
+{% endblock %}

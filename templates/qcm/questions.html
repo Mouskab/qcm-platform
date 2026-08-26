@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <div class="dashboard-header">
+  <div><span class="eyebrow">{{ qcm.titre }}</span><h1 class="display-2">Questions</h1></div>
+  <div style="display:flex; gap:10px;">
+    <a href="{% url 'qcm-importer-web' qcm.pk %}" class="btn btn-ghost">Importer depuis Excel</a>
+    <a href="{% url 'question-creer-web' qcm.pk %}" class="btn btn-primary">+ Ajouter une question</a>
+  </div>
+</div>
+
+
+    {% if questions %}
+    <table class="dj-table">
+      <thead><tr><th>Énoncé</th><th>Type</th><th>Points</th><th>Réponses</th></tr></thead>
+      <tbody>
+        {% for question in questions %}
+        <tr>
+          <td>{{ question.enonce }}</td>
+          <td>{{ question.get_type_question_display }}</td>
+          <td>{{ question.points }}</td>
+          <td>{{ question.reponses.count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>Aucune question pour l'instant.</p>
+      <a href="{% url 'question-creer-web' qcm.pk %}" class="btn btn-primary">Ajouter la première question</a>
+    </div>
+    {% endif %}
+
+    <p style="margin-top:24px;"><a href="{% url 'qcm-liste-web' %}" class="btn btn-ghost">← Retour aux QCM</a></p>
+  </div>
+</section>
+{% endblock %}

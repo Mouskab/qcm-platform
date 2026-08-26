@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block titre %}Tableau de bord — {{ organisation.nom }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container">
+    <span class="eyebrow">{{ organisation.nom }}</span>
+    <h1 class="display-2" style="margin-bottom:28px;">Tableau de bord pédagogique</h1>
+
+    {% if stats.nb_tentatives_total %}
+
+    <div class="dashboard-stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Moyenne générale</span>
+        <span class="stat-value">{{ stats.moyenne_generale }}%</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Tentatives enregistrées</span>
+        <span class="stat-value">{{ stats.nb_tentatives_total }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Membres actifs</span>
+        <span class="stat-value">{{ stats.membres|length }}</span>
+      </div>
+    </div>
+
+    <h2 class="display-2" style="font-size:1.4rem; margin:44px 0 20px;">Points faibles collectifs</h2>
+    <p class="lede" style="margin-bottom:20px; font-size:0.92rem;">
+      Thématiques classées de la moins maîtrisée à la mieux maîtrisée.
+    </p>
+    <table class="dj-table">
+      <thead><tr><th>Thématique</th><th>Moyenne</th><th>Tentatives</th></tr></thead>
+      <tbody>
+        {% for t in stats.thematiques %}
+        <tr>
+          <td>{{ t.nom }}</td>
+          <td>
+            <span class="badge {% if t.moyenne < 50 %}prive{% else %}public{% endif %}">{{ t.moyenne }}%</span>
+          </td>
+          <td>{{ t.nb_tentatives }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="display-2" style="font-size:1.4rem; margin:44px 0 20px;">Performance par membre</h2>
+    <table class="dj-table">
+      <thead><tr><th>Membre</th><th>Moyenne</th><th>Tentatives</th><th>Dernière activité</th></tr></thead>
+      <tbody>
+        {% for m in stats.membres %}
+        <tr>
+          <td>{{ m.utilisateur.username }}</td>
+          <td>
+            <span class="badge {% if m.moyenne < 50 %}prive{% else %}public{% endif %}">{{ m.moyenne }}%</span>
+          </td>
+          <td>{{ m.nb_tentatives }}</td>
+          <td>{{ m.derniere_activite|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% else %}
+    <div class="empty-state">
+      <p>Aucune tentative enregistrée pour l'instant. Les statistiques apparaîtront dès que vos membres commenceront à passer des QCM.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

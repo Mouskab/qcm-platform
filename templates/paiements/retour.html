@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titre %}Paiement — Zamse{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:480px; text-align:center;">
+    {% if paiement.statut == "valide" %}
+      <span class="eyebrow" style="color:var(--color-success);">Paiement réussi</span>
+      <h1 class="display-2" style="margin:16px 0;">Votre accès est activé.</h1>
+    {% elif paiement.statut == "refuse" %}
+      <span class="eyebrow">Paiement échoué</span>
+      <h1 class="display-2" style="margin:16px 0;">La transaction n'a pas abouti.</h1>
+      <p class="lede">Réessayez ou contactez le support.</p>
+    {% else %}
+      <span class="eyebrow">En attente</span>
+      <h1 class="display-2" style="margin:16px 0;">Confirmation en cours...</h1>
+      <p class="lede">Ça peut prendre quelques instants.</p>
+    {% endif %}
+    <a href="{% url 'plans-web' %}" class="btn btn-primary" style="margin-top:20px;">Retour aux abonnements</a>
+  </div>
+</section>
+{% endblock %}

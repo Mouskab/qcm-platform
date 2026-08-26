@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titre %}Créer un compte — Zamse{% endblock %}
+{% block contenu %}
+<div class="auth-page">
+  <div class="auth-card">
+    <span class="eyebrow">Zamse</span>
+    <h1>Créer un compte</h1>
+    <p class="lede">Rejoignez la plateforme en tant que candidat ou organisation.</p>
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {% for field in form %}
+        {% if field.name == "accepte_cgu" %}
+          <p class="cgu-field">
+            <label>
+              {{ field }}
+              {{ field.label|safe }}
+            </label>
+            {% if field.errors %}<span class="cgu-erreur">{{ field.errors|join:", " }}</span>{% endif %}
+          </p>
+        {% else %}
+          {{ field.as_field_group }}
+        {% endif %}
+      {% endfor %}
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Créer mon compte</button>
+    </form>
+    <p class="auth-switch">Déjà un compte ? <a href="{% url 'connexion' %}">Se connecter</a></p>
+  </div>
+</div>
+{% endblock %}

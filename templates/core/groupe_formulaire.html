@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titre %}{% if object %}Modifier{% else %}Nouveau{% endif %} groupe{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:620px;">
+    <span class="eyebrow">{{ user.organisation.nom }}</span>
+    <h1 class="display-2" style="margin-bottom:28px;">{% if object %}{{ object.nom }}{% else %}Nouveau groupe{% endif %}</h1>
+
+    <form method="post" class="dj-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <a href="{% url 'groupes-liste' %}" class="btn btn-ghost">Annuler</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

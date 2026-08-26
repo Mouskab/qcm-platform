@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block titre %}Progression — {{ qcm.titre }}{% endblock %}
+{% block contenu %}
+<section>
+  <div class="container" style="max-width:640px;">
+    <span class="eyebrow">{{ qcm.titre }}</span>
+    <h1 class="display-2" style="margin-bottom:8px;">Votre progression</h1>
+    {% if meilleur_pourcentage %}
+    <p class="lede" style="margin-bottom:32px;">Meilleur score : <strong>{{ meilleur_pourcentage }}%</strong> sur {{ nb_tentatives }} tentative{{ nb_tentatives|pluralize }}.</p>
+    {% endif %}
+
+    {% if historique %}
+    <div class="evolution-graphique">
+      {% for h in historique %}
+      <div class="evolution-barre-col">
+        <div class="evolution-barre" style="height:{{ h.pourcentage }}%;
+          background:{% if h.pourcentage == meilleur_pourcentage %}var(--color-gold){% else %}var(--color-ink){% endif %};">
+        </div>
+        <span class="evolution-valeur">{{ h.pourcentage }}%</span>
+        <span class="evolution-tendance">
+          {% if h.tendance == "hausse" %}↑{% elif h.tendance == "baisse" %}↓{% elif h.tendance == "stable" %}→{% else %}•{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <table class="dj-table" style="margin-top:32px;">
+      <thead><tr><th>Date</th><th>Score</th><th>Tendance</th></tr></thead>
+      <tbody>
+        {% for h in historique reversed %}
+        <tr>
+          <td>{{ h.date|date:"d/m/Y H:i" }}</td>
+          <td>{{ h.score_obtenu }} / {{ h.score_max }} ({{ h.pourcentage }}%)</td>
+          <td>
+            {% if h.tendance == "hausse" %}<span style="color:var(--color-success);">↑ Amélioration</span>
+            {% elif h.tendance == "baisse" %}<span style="color:var(--color-clay);">↓ En baisse</span>
+            {% elif h.tendance == "stable" %}→ Stable
+            {% else %}Première tentative{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><p>Aucune tentative corrigée pour ce QCM.</p></div>
+    {% endif %}
+
+    <a href="{% url 'mes-resultats-web' %}" class="btn btn-ghost" style="margin-top:24px;">← Mes résultats</a>
+  </div>
+</section>
+{% endblock %}
